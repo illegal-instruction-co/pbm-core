@@ -65,7 +65,7 @@ def main():
     canvas[500:500+square_size, 600:600+square_size] = layer_b
     
     # Output
-    output_path = "pbm_mvp/assets/test_kit_a4.png"
+    output_path = "assets/test_kit_a4.png"
     cv2.imwrite(output_path, canvas)
     print(f"\nSUCCESS: Generated {output_path}")
     print("Please print this file and follow the instructions on the image.")
