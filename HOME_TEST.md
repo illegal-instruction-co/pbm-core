@@ -16,16 +16,16 @@ This guide describes how to test the **Parallax-Bit Mapping (PBM)** authenticati
 Produce the required high-frequency grids and assembly guide by running the kit generator:
 
 ```powershell
-.venv\Scripts\python assets/home_test_kit.py
+python pbm_mvp/assets/home_test_kit.py
 ```
 
-This creates `assets/test_kit_a4.png`.
+This creates `pbm_mvp/assets/test_kit_a4.png`.
 
-![PBM Home Test Kit](assets/test_kit_a4.png)
+![PBM Home Test Kit](pbm_mvp/assets/test_kit_a4.png)
 
 ## Step 2: Physical Assembly
 
-1.  **Print**: Open `assets/test_kit_a4.png` and print it at **100% scale** (Disable "Scale to Fit").
+1.  **Print**: Open `pbm_mvp/assets/test_kit_a4.png` and print it at **100% scale** (Disable "Scale to Fit").
 2.  **Cut**: Cut out the two patterns labeled **SQUARE A** and **SQUARE B**.
 3.  **Translucency Hack**: Apply a small drop of cooking oil to the back of **SQUARE B** (the Top Layer) and wipe off the excess. This makes the paper fibers transparent enough for the camera to see the underlying layer.
 4.  **Layering**:
