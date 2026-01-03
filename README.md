@@ -33,6 +33,12 @@ The system operates on the principle that identity is not known before the produ
 See [PHILOSOPHY.md](PHILOSOPHY.md) for the design principles.
 See [SPECIFICATION.md](SPECIFICATION.md) for technical details.
 
+## Try it at Home 🏠
+
+Want to see PBM in action right now? You can build and test your own PBM token using just an inkjet printer, standard A4 paper, and basic household items.
+
+**[Follow the PBM Home Testing Guide](HOME_TEST.md)**
+
 ## Quick Start
 
 ### 1. Installation
@@ -75,6 +81,3 @@ python pbm_mvp/verify.py
 3.  **Liveness & Physics:** If valid, it proceeds to check the physical product against the signed fingerprint.
 4.  **Result:** "GENUINE" or "MISMATCH".
 
-## Philosophy
-See [PHILOSOPHY.md](PHILOSOPHY.md) for the design principles.
-See [SPECIFICATION.md](SPECIFICATION.md) for technical details.
