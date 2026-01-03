@@ -1,0 +1,383 @@
+﻿# PBM 2D Bypass Test
+
+This guide describes how to verify the **PBM Liveness Detection** by attempting to bypass the system with a 2D image.
+
+## Setup
+
+1.  **Image**: Use the provided spoofing target: `assets/test_2d_bypass.png`.
+2.  **Display**:
+    - **Print**: Print the image (scale 100%) on a single sheet of A4 paper.
+    - **Digital**: Alternatively, display it on a high-resolution tablet or monitor.
+
+## Test Procedure
+
+1.  Run the verification or enrollment tool:
+    ```powershell
+    python pbm_mvp/verify.py
+    # OR
+    python pbm_mvp/enroll.py
+    ```
+2.  **Presentation**: Show the 2D image/screen to the camera.
+3.  **Action**: When prompted to **"MOVE CAMERA SLIGHTLY"**, perform the usual parallel movement.
+
+### Visual Example
+<img src="assets/example_bypass_test.jpg" width="400" alt="Bypass Test Attempt">
+
+*Showing a 2D image to the camera results in INVALID_2D because there is no parallax (relative motion) between the layers.*
+
+## Expected Result
+
+> [!IMPORTANT]
+> **FAIL**: The system should NOT accept this target.
+
+- **Status**: Should display `INVALID_2D`.
+- **Reason**: Since there is no physical gap between layers, no parallax (relative motion) is detected. The PBM algorithm correctly identifies this as a flat spoof.
+
+---
+*This test proves that PBM prevents identity theft via photocopies or digital screen replays.*
+# Governance of PBM
+
+## 1. Decentralized by Design
+
+PBM is designed to be a "commons" protocol. It belongs to no single entity. 
+*   **No API Keys**: You do not need an account to use PBM.
+*   **No Usage Fees**: There are no royalties for printing tokens or running decoders.
+*   **No Central Server**: The verification logic runs entirely on the edge device.
+
+## 2. Who Can Implement PBM?
+
+**Anyone.**
+*   You do not need permission to write a PBM decoder.
+*   You do not need permission to print PBM tokens.
+*   You can include PBM in commercial, open-source, or private software.
+
+## 3. Compatibility Marking
+
+We define "COMPATIBLE" implementations as those that:
+1.  Correctly implement the DSNL normalization step.
+2.  Adhere to the `UNDECIDABLE` safety rule (never guess).
+3.  Can successfully decode standard reference tokens.
+
+There is currently no formal certification body. Compatibility is established via community consensus and reference suites (to be developed).
+
+## 4. RFC Culture
+
+We follow the "Request For Comments" (RFC) model of the Internet Engineering Task Force (IETF).
+*   Changes to the spec are proposed as RFCs.
+*   Adoption is driven by rough consensus and running code.
+*   "Simplicity" is a primary selection criterion for new features.
+
+## 5. Trademarks
+
+If a "PBM" trademark is ever registered, its sole purpose will be to prevent **misuse**, such as:
+*   Companies claiming a proprietary, closed system is "PBM Standard".
+*   Malicious actors distributing compromised decoders under the official name.
+It will **not** be used to restrict legitimate usage or forks.
+# PBM Home Testing Guide
+
+This guide describes how to test the **Parallax-Bit Mapping (PBM)** authentication protocol using standard A4 paper and an inkjet printer.
+
+## Prerequisites
+
+- Inkjet or Laser printer.
+- Standard A4 paper.
+- A transparent spacer: A clear CD jewel case, 5-10mm of acrylic, or a piece of thick transparent plastic.
+- Tape or adhesive.
+- **Top Layer Material**: Inkjet-compatible semi-transparent plastic sticker (Recommended) or standard A4 paper with a translucency agent (cooking/mineral oil).
+- Python environment with dependencies installed (`opencv-python`, `numpy`, `cryptography`).
+
+## Step 1: Generate the printable Kit
+
+Produce the required high-frequency grids and assembly guide by running the kit generator:
+
+```powershell
+python pbm_mvp/assets/home_test_kit.py
+```
+
+This creates `pbm_mvp/assets/test_kit_a4.png`.
+
+<img src="pbm_mvp/assets/test_kit_a4.png" width="500" alt="PBM Home Test Kit">
+
+## Step 2: Physical Assembly
+
+1.  **Print**: Open `pbm_mvp/assets/test_kit_a4.png` and print it at **100% scale** (Disable "Scale to Fit").
+2.  **Cut**: Cut out the two patterns labeled **SQUARE A** and **SQUARE B**.
+3.  **Translucency**: For optimal results, using an **inkjet-compatible semi-transparent plastic sticker** for the top layer is highly recommended. If this is not available, you can use the "Oil Hack" below (note that standard paper with oil or other alternatives often fail to provide sufficient clarity and are generally not recommended):
+    - Apply a small drop of cooking oil to the back of **SQUARE B** (the Top Layer) and wipe off the excess. This makes the paper fibers transparent enough for the camera to see the underlying layer.
+4.  **Layering**:
+    - Tape **SQUARE A** to the back side of your transparent spacer.
+    - Tape **SQUARE B** to the front side.
+    - Result: You now have two high-frequency grids separated by a ~5-10mm physical gap.
+
+### Visual Guide
+To understand what we are emulating, here is an example of a real PBM-protected product and the measurement process:
+
+| Real Product Example | Measurement Alignment |
+| :---: | :---: |
+| ![Original Product](assets/example_original_product.jpg) | ![Bypass Test Example](assets/example_bypass_test.jpg) |
+| *High-frequency patterns on a real product* | *Camera view during liveness check* |
+
+## Step 3: Enrollment (Manufacturing)
+
+Register your physical token into the digital system:
+
+```powershell
+.venv\Scripts\python pbm_mvp/enroll.py
+```
+
+1.  Align the token with the on-screen box.
+2.  Move the camera slightly when prompted. The system is measuring the **Parallax Field** created by the gap between Layer A and B.
+3.  The tool will output a signed JSON block. **Copy this JSON.**
+
+## Step 4: Verification (User Check)
+
+Validate the authenticity of your physical token:
+
+```powershell
+.venv\Scripts\python pbm_mvp/verify.py
+```
+
+1.  **QR Scanning**: Scan the QR code containing the digital signature.
+    <img src="assets/example_last_qr.png" width="300" alt="QR Scan Example">
+2.  **Liveness Check**: Present the token to the camera.
+3.  The tool checks for **3D Liveness** (to ensure it's not a photocopy) and compares the measured physical fingerprint against the digital signature.
+
+---
+> **Troubleshooting**: If liveness or registration fails, ensure you are using a **semi-transparent sticker** as recommended. If using the oil hack, ensure the area is well-lit and the paper is sufficiently translucent for the underlying grid on Square A to be clearly visible to the camera. Most "home-made" alternatives have high failure rates due to light scattering.
+
+# Licensing Intent
+
+## Apache 2.0
+This project and reference implementation are released under the **Apache License, Version 2.0**.
+
+We chose this license because:
+1.  **Permissive**: You can use this code in proprietary software, open-source projects, or research without "viral" restrictions.
+2.  **Patent Non-Assertion**: It includes an explicit patent grant. This means that contributors to this project promise not to sue you for patent infringement regarding the contributions they made. This is critical for an open hardware/software standard.
+
+## Public Domain for Specs
+The text of the *specification files* (SPECIFICATION.md, PHILOSOPHY.md) is dedicated to the public domain (CC0), to the maximum extent possible. We want the *idea* to be free, while the *code* is protected by Apache 2.0 to ensure safe contribution cycles.
+
+## Why Openness Matters
+An identity or presence protocol must be trusted. Trust requires transparency. By ensuring the core logic is open and unencumbered by legal threats, we allow:
+*   **Security Audits**: White-hat hackers can test the limits of the physics.
+*   **Adoption**: Companies can integrate it without fear of future "rent-seeking."
+*   **Resilience**: The protocol survives even if the original authors disappear.
+# Philosophy of PBM
+
+## 1. Acceptance of Physical Noise
+
+The physical world is messy. Lighting varies, lenses distort, and materials age. A robust protocol must accept this noise as a fundamental constraint, not an exception.
+
+PBM does not seek perfect signal reconstruction. Instead, it seeks a "signal margin" sufficient to distinguish $d > 0$ (3D) from $d \approx 0$ (2D). We define a "Decodable State" where the signal-to-noise ratio (SNR) is sufficient for a deterministic decision. Outside this state, the system must return `UNDECIDABLE`, never a guess.
+
+## 2. Determinism over Probability
+
+Modern computer vision heavily relies on Machine Learning (ML), which is probabilistic. An ML model might conclude "99% probability this is a real object."
+
+PBM rejects this approach. PBM is based on **Projective Geometry**, which is deterministic.
+*   If layers are separated by distance $d$, and viewed at angle $\theta$, displacement $\Delta x$ **must** occur.
+*   If $\Delta x$ does not occur, $d$ must be 0 (or $\theta$ is 0).
+
+We prioritize algorithms with clear failure modes (e.g., FFT, Phase Correlation) over "black box" neural networks. A PBM decoder should be auditible.
+
+## 3. Statelessness and Decentralization
+
+A physical token lies in the user's hand. Its verification should not depend on:
+*   A server in the cloud.
+*   A blockchain transaction.
+*   The previous state of the device.
+
+Like a QR code, a PBM token simply *is*. It contains all necessary information for its own verification. This enables:
+*   **Privacy**: Verification can happen offline.
+*   **Resilience**: The system works when the internet is down.
+*   **Longevity**: The token works 50 years from now, regardless of the creator's business status.
+
+## 4. Normalization (The "DSNL" Approach)
+
+Standardization requires normalization. QR codes use "finder patterns" to normalize perspective, rotation, and scale before decoding bits.
+
+PBM mandates a **Deterministic Spatial Normalization Layer (DSNL)**. Before any parallax measurement is attempted, the input image must be geometrically warped to a canonical coordinate system (e.g., a unit square).
+*   This removes dependence on camera distance and angle.
+*   It simplifies the decoder, which only operates on the canonical space.
+
+## 5. Simplicity vs. Intelligence
+
+"Intelligence" in software often implies complexity and hidden assumptions. We prefer "Simplicity" in the Shannon senseâ€”stripping away redundancy until only the core truth remains.
+
+*   We do not try to "understand" the scene.
+*   We only measure the specific frequency shift commanded by the protocol.
+*   "Clever tricks" to compensate for bad tokens are rejected. If a token is bad, it should fail.
+
+## 6. Open Standards > Proprietary Control
+
+Security through obscurity is fragile. Proprietary security features (holograms, special inks) rely on the secrecy of the manufacturing process.
+
+PBM relies on the **physics of parallax**. The security comes from the difficulty of presenting a properly aligned parallax field on a 2D display, not from a secret recipe. By opening the spec, we invite attack and analysis, which strengthens the protocol in the long run.
+
+## 7. Identity is Born with Manufacturing
+
+We reject the "Generation-First" approach where a digital ID is created in a database and then stamped onto a product. This creates a disconnect between the physical reality and the digital record.
+
+In PBM:
+1.  The product is made.
+2.  The product is measured (Enrolled).
+3.  The measurement (Physical Fingerprint) *becomes* the identity.
+
+This ensures that the digital record is a derivative of the physical reality, not the other way around. The QR code is merely a vessel for this measurement, attached after the fact.
+# PBM Authentication Protocol
+
+## Overview
+
+PBM (Parallax-Bit Mapping) is an open physical-digital standard for ensuring product authenticity.
+
+**Core Invariant: Identity is born with manufacturing.**
+
+The system operates on the principle that identity is not known before the product exists. Identity is extracted from the unique physical imperfections and properties of the manufactured object (the "Physical Fingerprint") and then bound to a digital record.
+
+## Features
+
+<img src="assets/example_original_3d.jpeg" width="400" alt="PBM Original 3D Token">
+<br><i>Example of a physical PBM token featuring 3D depth between layers.</i>
+
+
+*   **Manufacturing-First Identity:** The system does not generate the token; it measures the manufactured token.
+*   **Enrollment & Verification:** Two distinct tools for registering and checking products.
+*   **Unclonable:** Resists photocopies, photos, and screen-based spoofing via PBM liveness checks.
+*   **Open Standard:** No proprietary cloud servers required. Works offline.
+
+## System Components
+
+1.  **Enrollment Tool (`enroll.py`):**
+    *   Captures the physical token.
+    *   Validates liveness (3D structure).
+    *   Extracts the physical fingerprint hash.
+    *   Outputs the data for QR generation.
+
+2.  **Verification Tool (`verify.py`):**
+    *   Scans the QR code (Claimed Identity).
+    *   Validates liveness.
+    *   Re-extracts the physical fingerprint.
+    *   Compares the Measured vs Claimed identity.
+
+## Philosophy
+See [PHILOSOPHY.md](PHILOSOPHY.md) for the design principles.
+See [SPECIFICATION.md](SPECIFICATION.md) for technical details.
+
+## Try it at Home ğŸ 
+
+Want to see PBM in action right now? You can build and test your own PBM token using just an inkjet printer, standard A4 paper, and basic household items.
+
+**[Follow the PBM Home Testing Guide](HOME_TEST.md)**
+
+## Quick Start
+
+### 1. Installation
+ 
+ ```powershell
+ # Create venv
+ py -3.11 -m venv .venv
+ .venv\Scripts\activate
+ 
+ # Install dependencies
+ pip install -r pbm_mvp/requirements.txt
+ ```
+
+### 2. Initialization (One-time Setup)
+
+Generate the cryptographic keys for the Product Authority:
+
+```powershell
+    python pbm_mvp/keygen.py
+```
+This creates `private_key.pem` (keep secret!) and `public_key.pem` (distribute to verifiers).
+
+### 3. Enroll a Product (Manufacturer)
+
+```powershell
+python pbm_mvp/enroll.py
+```
+1.  Place the product under the camera.
+2.  Follow on-screen instructions to align and capture.
+3.  The tool outputs a JSON block containing the **Signed Digital Passport**.
+4.  Generate a QR code containing this exact JSON data.
+
+### 4. Verify a Product (User)
+
+```powershell
+python pbm_mvp/verify.py
+```
+1.  **Scan QR:** Show the product's signed QR code to the camera.
+2.  **Signature Check:** The tool validates the signature using `public_key.pem`.
+3.  **Liveness & Physics:** If valid, it proceeds to check the physical product against the signed fingerprint.
+4.  **Result:** "GENUINE" or "MISMATCH".
+
+# PBM Specification (DRAFT 0.2)
+
+## 1. Introduction
+This document outlines the technical requirements for the Parallax-Bit Mapping (PBM) token and decoder. It is a work in progress and subject to change.
+
+## 2. Terminology
+
+*   **PBM Token**: The physical object consisting of multiple semi-transparent layers.
+*   **Carrier**: The physical high-frequency pattern (grid, noise, or lattice) printed on layer surfaces.
+*   **Spacer**: The transparent medium separating layers with thickness $d$.
+*   **Parallax Field**: The vector field $(\Delta x, \Delta y)$ describing the relative displacement of Carrier A and Carrier B.
+*   **DSNL (Deterministic Spatial Normalization Layer)**: The algorithm step that warps the observed token image to a canonical coordinate system.
+*   **Physical Fingerprint**: A compact digital representation of the intrinsic physical properties of the token (e.g. precise grid angles, frequencies, and phase defects).
+
+## 3. Physical Carrier Assumptions
+
+To ensure compatibility, a PBM token must adhere to:
+*   **Dimensions**: The active area should be square (aspect ratio $1:1 \pm 0.05$).
+*   **Fiducials**: Must contain machine-readable corners or borders to facilitate DSNL.
+*   **Layer Separation**: Distance $d$ must be sufficient to produce $>$1 pixel shift at varying view angles (recommended $d \ge 1.0$ mm).
+*   **Frequencies**: Carrier spatial frequencies must be resolvable by standard commodity cameras (e.g., > 20 pixels per period in captured image).
+
+## 4. Signal vs. Noise
+
+The decoder must distinguish between:
+*   **Signal**: The coherent, rigid-body shift of Layer B relative to Layer A.
+*   **Noise**: Sensor noise, compression artifacts, and localized defects.
+
+**Rule 4.1**: The decoder must operate in the frequency domain or use rigorously defined correlation methods. Ad-hoc pixel differencing is prohibited.
+
+## 5. Mandatory Normalization (DSNL)
+
+Implementation conformance requires:
+1.  **Input**: Raw image.
+2.  **Process**: Detect fiducials $\to$ Compute Homography $\to$ Warp to Canonical Space ($512 \times 512$ px, 8-bit grayscale).
+3.  **Output**: All subsequent processing acts *only* on this normalized image.
+
+## 6. Enrollment & Verification
+
+### 6.1 Enrollment
+The enrollment process must:
+1.  Validate PBM liveness (`VALID_3D`).
+2.  Aggregate feature vectors over $N$ frames to reduce noise.
+3.  Output a `fingerprint_hash` that uniquely identifies the physical token instance.
+
+### 6.2 Verification
+The verification process must:
+1.  Read the `claimed_hash` from the QR code.
+2.  Validate PBM liveness locally (`VALID_3D`).
+3.  Re-extract the `measured_hash`.
+4.  Compare using a defined tolerance metric (e.g. Euclidean distance or cosine similarity).
+
+## 7. Decision Logic
+
+The core output of a PBM decoder is a tri-state classification:
+
+1.  **UNDECIDABLE**:
+    *   Fiducials not found.
+    *   Image blur / SNR too low.
+    *   Calculated shift is unstable (high variance over time).
+
+2.  **INVALID_2D / FAKE**:
+    *   SNR is high (clear image).
+    *   Calculated shift magnitude $|\vec{v}| < \epsilon$ (where $\epsilon$ is the noise floor).
+    *   Liveness check fails.
+
+3.  **VALID_3D / GENUINE**:
+    *   SNR is high.
+    *   Calculated shift magnitude $|\vec{v}| > \epsilon$.
+    *   Fingerprint matches the claimed identity.
