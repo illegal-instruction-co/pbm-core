@@ -107,7 +107,7 @@ class VerificationSession:
         diffs = self._compare_features(measured)
         feat_ok = all(ok for _, ok in diffs.values())
         
-        scale_limit = max(config.PBM_SCALE_EPS, 0.01)
+        scale_limit = config.PBM_SCALE_EPS
         scale_ok = scale_diff < scale_limit
         final_gen = scale_ok and feat_ok
 
