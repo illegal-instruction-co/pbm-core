@@ -10,6 +10,9 @@ The system operates on the principle that identity is not known before the produ
 
 ## Features
 
+![PBM Original 3D Token](assets/example_original_3d.jpeg)
+*Example of a physical PBM token featuring 3D depth between layers.*
+
 *   **Manufacturing-First Identity:** The system does not generate the token; it measures the manufactured token.
 *   **Enrollment & Verification:** Two distinct tools for registering and checking products.
 *   **Unclonable:** Resists photocopies, photos, and screen-based spoofing via PBM liveness checks.
