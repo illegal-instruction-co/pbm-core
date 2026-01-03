@@ -19,9 +19,9 @@ Produce the required high-frequency grids and assembly guide by running the kit 
 python pbm_mvp/assets/home_test_kit.py
 ```
 
-This creates `pbm_mvp/assets/test_kit_a4.png`.
+This creates `/assets/test_kit_a4.png`.
 
-<img src="pbm_mvp/assets/test_kit_a4.png" width="500" alt="PBM Home Test Kit">
+<img src="/assets/test_kit_a4.png" width="500" alt="PBM Home Test Kit">
 
 ## Step 2: Physical Assembly
 
