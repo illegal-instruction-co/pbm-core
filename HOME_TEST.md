@@ -34,6 +34,14 @@ This creates `pbm_mvp/assets/test_kit_a4.png`.
     - Tape **SQUARE B** to the front side.
     - Result: You now have two high-frequency grids separated by a ~5-10mm physical gap.
 
+### Visual Guide
+To understand what we are emulating, here is an example of a real PBM-protected product and the measurement process:
+
+| Real Product Example | Measurement Alignment |
+| :---: | :---: |
+| ![Original Product](assets/example_original_product.jpg) | ![Bypass Test Example](assets/example_bypass_test.jpg) |
+| *High-frequency patterns on a real product* | *Camera view during liveness check* |
+
 ## Step 3: Enrollment (Manufacturing)
 
 Register your physical token into the digital system:
@@ -54,8 +62,11 @@ Validate the authenticity of your physical token:
 .venv\Scripts\python pbm_mvp/verify.py
 ```
 
-1.  Present the token to the camera.
-2.  The tool checks for **3D Liveness** (to ensure it's not a photocopy) and compares the measured physical fingerprint against the digital signature.
+1.  **QR Scanning**: Scan the QR code containing the digital signature.
+    ![QR Scan Example](assets/example_last_qr.png)
+2.  **Liveness Check**: Present the token to the camera.
+3.  The tool checks for **3D Liveness** (to ensure it's not a photocopy) and compares the measured physical fingerprint against the digital signature.
 
 ---
 > **Troubleshooting**: If liveness or registration fails, ensure you are using a **semi-transparent sticker** as recommended. If using the oil hack, ensure the area is well-lit and the paper is sufficiently translucent for the underlying grid on Square A to be clearly visible to the camera. Most "home-made" alternatives have high failure rates due to light scattering.
+

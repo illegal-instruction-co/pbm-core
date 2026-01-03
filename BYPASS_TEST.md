@@ -20,6 +20,10 @@ This guide describes how to verify the **PBM Liveness Detection** by attempting 
 2.  **Presentation**: Show the 2D image/screen to the camera.
 3.  **Action**: When prompted to **"MOVE CAMERA SLIGHTLY"**, perform the usual parallel movement.
 
+### Visual Example
+![Bypass Test Attempt](assets/example_bypass_test.jpg)
+*Showing a 2D image to the camera results in INVALID_2D because there is no parallax (relative motion) between the layers.*
+
 ## Expected Result
 
 > [!IMPORTANT]

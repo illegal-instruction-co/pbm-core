@@ -25,7 +25,7 @@ def find_roi(frame):
         approx = cv2.approxPolyDP(cnt, config.ROI_RECT_CLOSENESS * peri, True)
         
         if len(approx) == 4 and cv2.isContourConvex(approx):
-            x, y, w, h = cv2.boundingRect(approx)
+            _, _, w, h = cv2.boundingRect(approx)
             aspect_ratio = float(w)/h
             if abs(aspect_ratio - 1.0) < config.ROI_ASPECT_RATIO_TOLERANCE:
                 if area > max_area:
